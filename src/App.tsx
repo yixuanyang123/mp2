@@ -9,7 +9,7 @@ import DetailView from './pages/DetailView';
 function App() {
   return (
     <MealsProvider>
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
+  <BrowserRouter basename="/mp2">
         <div className="App-root">
           <header className="App-header">
             <div className="brand">
