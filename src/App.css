@@ -7,32 +7,94 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+:root{
+  --bg:#fff;
+  --muted:#6b6f76;
+  --accent:#ff6b5f; /* coral tone */
+  --card-shadow: rgba(18,24,30,0.06);
+  --card-shadow-hover: rgba(12,20,30,0.08);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+.App-root { padding: 16px; max-width: 1100px; margin: 0 auto; }
+.App-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px }
+.App-title { margin: 0; font-size: 18px; letter-spacing: 0.2px; color: var(--accent); font-weight:600 }
+.App-nav { display: flex; gap: 8px }
+.App-nav a { text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 6px; font-weight:500 }
+.App-nav a:hover { background: #fff0ef }
+.App-main { max-width: 920px; margin: 8px auto; background: var(--bg); padding: 18px; border-radius: 12px; box-shadow: 0 10px 30px rgba(16,22,28,0.06); position: relative; overflow: hidden; }
+
+/* decorative top accent bar */
+.App-main::before{
+  content: '';
+  position: absolute;
+  left: -40%;
+  top: -40%;
+  width: 200%;
+  height: 120%;
+  background: linear-gradient(120deg, rgba(255,107,95,0.06), rgba(255,199,187,0.02));
+  transform: rotate(-6deg);
+  pointer-events: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* subtle diagonal stripes overlay */
+.App-main::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.02) 75%, transparent 75%, transparent);
+  background-size: 16px 16px;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-.App-link {
-  color: #61dafb;
+/* Solid pink background for List view */
+.App-main.list-mode {
+  background: linear-gradient(180deg, #ffeef2 0%, #ffd6e4 100%); /* subtle pink */
+}
+.App-main.list-mode::before,
+.App-main.list-mode::after {
+  display: none; /* remove decorative overlays for solid background */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.brand { display:flex; align-items:center; gap:8px }
+.brand .logo { font-size:20px; line-height:1 }
+.brand .title-small { font-size:16px }
+
+.controls { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap }
+.search { flex:1; max-width:480px; display:flex; gap:8px }
+.search input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid #ddd }
+.btn { padding:8px 12px; border-radius:8px; background:var(--accent); color:#fff; border:none; cursor:pointer; font-weight:600 }
+.btn.secondary { background:#fff; color:var(--muted); border:1px solid #eee }
+
+.grid { display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) }
+.meal-card { border-radius:10px; overflow:hidden; background:var(--bg); transition: transform .14s ease, box-shadow .14s ease; box-shadow: 0 4px 10px var(--card-shadow) }
+.meal-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px var(--card-shadow-hover) }
+.meal-card img { width:100%; height:160px; object-fit:cover; display:block }
+.meal-card .meta { padding:12px }
+.meal-card h4 { margin:0 0 6px 0; color:#222 }
+.meal-card .sub { color:var(--muted); font-size:13px }
+
+/* List view overrides */
+.list-view { display:flex; flex-direction:column; gap:8px }
+.list-item { border-bottom: 1px dotted rgba(0,0,0,0.08); padding:16px 12px }
+.meal-card.list { display:flex; align-items:center; gap:20px; border-radius:8px; padding:10px }
+.meal-card.list img { width:72px; height:72px; border-radius:8px; flex:0 0 72px }
+.meal-card.list .meta { padding:0 6px }
+.meal-card.list h4 { font-size:22px; margin:0; color:#c63d87 }
+.meal-card.list .sub { font-size:14px; color:var(--muted); margin-top:6px }
+
+@media (max-width:720px){
+  .meal-card.list img { width:64px; height:64px }
+  .meal-card.list h4 { font-size:18px }
 }
+
+.detail { display:flex; gap:18px; align-items:flex-start }
+.detail img { border-radius:10px; width:320px; max-width:40%; box-shadow: 0 6px 18px rgba(0,0,0,0.04) }
+.detail .info { flex:1 }
+.detail .info h3 { margin-top:0 }
+
+@media (max-width:720px){
+  .detail { flex-direction:column }
+  .detail img { width:100%; max-width:100% }
+}
+
