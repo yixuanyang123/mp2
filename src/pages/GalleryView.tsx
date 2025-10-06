@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { listCategories, filterByCategory, searchMealsByName } from '../api/meals';
-import { fetchAllMealsByLetter } from '../api/meals';
+import { listCategories, filterByCategory, fetchAllMealsByLetter } from '../api/meals';
 import { useMeals } from '../context/MealsContext';
 import MealCard from '../shared/MealCard';
 
