@@ -23,7 +23,6 @@ export async function filterByCategory(cat: string) {
 }
 
 export async function fetchAllMealsByLetter() {
-  // simple caching to avoid re-fetching on every reload
   try {
     const cacheKey = 'dishbook_all_meals_v1';
     const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(cacheKey) : null;
@@ -38,7 +37,7 @@ export async function fetchAllMealsByLetter() {
   }
 
   const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-  const batchSize = 5; // limit concurrency to reduce connection pressure
+  const batchSize = 5;
   const map = new Map<string, any>();
 
   for (let i = 0; i < letters.length; i += batchSize) {
@@ -48,22 +47,16 @@ export async function fetchAllMealsByLetter() {
         .get(`${BASE}/search.php`, { params: { f: l }, timeout: 10_000 })
         .then(r => r.data.meals || [])
         .catch(err => {
-          // log and continue with empty result for this letter
-          // network errors happen occasionally; don't fail the whole batch
-          // eslint-disable-next-line no-console
           console.warn('fetchAllMealsByLetter: letter failed', l, err && err.message ? err.message : err);
           return [];
         })
     );
-    // await the batch
     const results = await Promise.all(promises);
     for (const list of results) {
       for (const m of list || []) {
         if (m && m.idMeal && !map.has(m.idMeal)) map.set(m.idMeal, m);
       }
     }
-    // small pause between batches to be polite to the API
-    // eslint-disable-next-line no-await-in-loop
     await new Promise(res => setTimeout(res, 150));
   }
 

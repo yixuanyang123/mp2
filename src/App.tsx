@@ -21,8 +21,6 @@ function App() {
               <Link to="/gallery">Gallery</Link>
             </nav>
           </header>
-
-          {/* Use a small inner component so we can call the location hook and toggle a class on <main> */}
           <MainRoutes />
         </div>
       </BrowserRouter>
